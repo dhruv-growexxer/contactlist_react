@@ -5,6 +5,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
+app.use(cors());
 
 const route = require('./routes/route');
 
@@ -32,7 +33,7 @@ app.get('/', (req, res) => {
   res.send('foobar');
 });
 
-const port = 3000;
+const port = 5000;
 
 app.listen(port, () => {
   console.log('app is listening on', port);

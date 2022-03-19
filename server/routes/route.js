@@ -31,6 +31,23 @@ router.post('/contact', (req, res, next) => {
   });
 });
 
+// update contacts
+// api/contact
+router.put('/contact/:id', async (req, res, next) => {
+  try {
+    const doc = await Contact.findOneAndUpdate({ _id: req.params.id }, {
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      phone: req.body.phone,
+    });
+    console.log('docs ', doc);
+    res.json({ msg: 'contact updated successfully' });
+  } catch (error) {
+    console.log('error from .put', error);
+    res.json({ msg: 'failed to update contact' });
+  }
+});
+
 // delete contacts
 // api/contact/:id
 router.delete('/contact/:id', (req, res, next) => {
