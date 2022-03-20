@@ -1,12 +1,17 @@
 @import "~antd/dist/antd.css";
 
-.App {
-  text-align: center;
+* {
+  padding: 0;
+  margin: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html,
+body {
+  height: 100%;
+}
+
+.App {
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -37,4 +42,15 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.margin-medium {
+  margin: auto 10px;
+}
+
+.align-items {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  width: 100%;
 }
