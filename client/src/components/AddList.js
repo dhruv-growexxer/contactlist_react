@@ -21,10 +21,10 @@ const AddList = () => {
     }
   };
   return (
-    <>
+    <div className="add-list">
       <label htmlFor="first_name">Enter first name: </label>
       <Input
-        style={{ width: 200, marginRight:10, marginLeft:10 }}
+        style={{ width: 200, marginRight:10 }}
         type="text"
         name="first_name"
         id=""
@@ -32,7 +32,7 @@ const AddList = () => {
       />
       <label htmlFor="last_name">Enter last name: </label>
       <Input
-        style={{ width: 200, marginRight:10, marginLeft:10 }}
+        style={{ width: 200, marginRight:10 }}
         type="text"
         name="last_name"
         id=""
@@ -51,7 +51,7 @@ const AddList = () => {
       </Button>{" "}
       <br />
       <br />
-    </>
+    </div>
   );
 };
 

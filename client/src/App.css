@@ -7,11 +7,12 @@
 
 html,
 body {
-  height: 100%;
+  height: 100vh;
 }
 
 .App {
   text-align: center;
+  margin-top: 50px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -53,4 +54,18 @@ body {
   justify-content: center;
   align-self: center;
   width: 100%;
+}
+
+label {
+  font-size: 18px;
+  margin: auto 15px;
+}
+
+h1 {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.add-list {
+  margin: 15px auto;
 }

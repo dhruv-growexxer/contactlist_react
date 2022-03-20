@@ -42,7 +42,8 @@ const GetList = () => {
         last_name: newLastName === "" ? lname : newLastName,
         phone: newPhone === 0 ? pno : newPhone,
       })
-      .then(() => {
+        .then(() => {
+          message.success("Contact Updated, Refresh the page")
         setIsModalVisible(false);
       });
     // setIsModalVisible(false)
@@ -65,26 +66,26 @@ const GetList = () => {
       {contactList.map((contact, index) => {
         return (
           <div key={index}>
-            <label>First name: {contact.first_name}</label>{" "}
-            <label>Last name: {contact.last_name}</label>{" "}
+            <label>First name: {contact.first_name}</label>
+            <label>Last name: {contact.last_name}</label>
             <label>Phone: {contact.phone}</label> <br />
             <div className="align-items">
-                    <Input
-                        style={{ width: 200, marginRight:10, marginLeft:10 }}
+              <Input
+                style={{ width: 200, marginRight: 10, marginLeft: 10 }}
                 type="text"
                 name="new_first_name"
                 placeholder={contact.first_name}
                 onChange={(e) => setNewFirstName(e.target.value)}
               />
-                    <Input
-                        style={{ width: 200, marginRight:10, marginLeft:10 }}
+              <Input
+                style={{ width: 200, marginRight: 10, marginLeft: 10 }}
                 type="text"
                 name="new_last_name"
                 placeholder={contact.last_name}
                 onChange={(e) => setNewLastName(e.target.value)}
               />
-                    <Input
-                        style={{ width: 200, marginRight:10, marginLeft:10 }}
+              <Input
+                style={{ width: 200, marginRight: 10, marginLeft: 10 }}
                 type="number"
                 name="new_phone"
                 placeholder={contact.phone}
