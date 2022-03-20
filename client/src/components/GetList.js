@@ -14,8 +14,7 @@ const GetList = () => {
             const fetchList = async () => {
                 const {data} = await axios.get('http://localhost:5000/api/contacts')
                 setContactList([...data])
-                console.log(data)
-                console.log(contactList)
+                console.log(data, "data")
             }
             fetchList();
         } catch (error) {
@@ -23,12 +22,14 @@ const GetList = () => {
         } 
     }, []);
 
+    console.log(contactList, "contactlist from outside of useEffect")
+
     const showModal = () => {
         setIsModalVisible(true);
     };
 
     const handleOk = (id, fname, lname, pno) => {
-        // console.log(fname, lname, pno)
+        console.log(fname, lname, pno)
         // if ('' !== newFirstName) {
         //     console.log("newfirstname", newFirstName)
         // }
@@ -40,8 +41,10 @@ const GetList = () => {
                 last_name: newLastName === '' ? lname : newLastName,
                 phone: newPhone === 0 ? pno : newPhone,
             }
-        )
-        setIsModalVisible(false);
+        ).then(() => {
+            setIsModalVisible(false);
+        })
+        // setIsModalVisible(false)
     };
 
     const handleCancel = () => {
@@ -59,7 +62,7 @@ const GetList = () => {
         <>
             {
                 contactList.map((contact, index) => {
-                   
+                
                     return <div key={index}>
 
                         <label>First name: {' '}
@@ -71,16 +74,22 @@ const GetList = () => {
                         <label>Phone: {' '}
                             {contact.phone}
                         </label>{' '}
+                        <br />
 
-                         <Button type="primary" onClick={showModal}>
+                        <input type="text" name="new_first_name" placeholder='Edit first name' onChange={(e) => setNewFirstName(e.target.value)}/>
+                        <input type="text" name="new_last_name" placeholder='Edit last name' onChange={(e) => setNewLastName(e.target.value)}/>
+                        <input type="number" name="new_phone"  placeholder='Edit phone number' onChange={(e) => setNewPhone(e.target.value)}/>
+                        <button onClick={() =>  handleOk(contact._id, contact.first_name, contact.last_name, contact.phone)}>Update</button>
+                            
+                        {/* <Button type="primary" onClick={showModal}>
                             Update
                         </Button>
-                        <Modal title="Basic Modal" visible={isModalVisible} onOk={()=>handleOk(contact._id, contact.first_name, contact.last_name, contact.phone)} onCancel={handleCancel}>
-                            <input type="text" name="first_name" value={contact.first_name} placeholder='Edit first name' onChange={(e) => setNewFirstName(e.target.value)}/>
-                            <input type="text" name="last_name" value={contact.last_name} placeholder='Edit last name' onChange={(e) => setNewLastName(e.target.value)}/>
-                            <input type="number"  name="phone" value={contact.phone} placeholder='Edit phone number' onChange={(e) => setNewPhone(e.target.value)}/>
+                        <Modal title="Basic Modal" visible={isModalVisible} onOk={() =>  handleOk(contact._id, contact.first_name, contact.last_name, contact.phone)} onCancel={handleCancel}>
+                            <input type="text" name="new_first_name" placeholder='Edit first name' onChange={(e) => setNewFirstName(e.target.value)}/>
+                            <input type="text" name="new_last_name" placeholder='Edit last name' onChange={(e) => setNewLastName(e.target.value)}/>
+                            <input type="number" name="new_phone"  placeholder='Edit phone number' onChange={(e) => setNewPhone(e.target.value)}/>
                             
-                        </Modal>
+                        </Modal> */}
                         <button onClick={()=>deleteContact(contact._id)}>Delete</button>
                     </div>
                 })
