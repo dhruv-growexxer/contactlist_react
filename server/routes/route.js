@@ -2,7 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 
+const mongoose = require('mongoose');
 const Contact = require('../models/contacts');
+
+const id = mongoose.Types.ObjectId('4edd40c86762e0fb12000003');
 
 // retreiving data
 // /api/contacts
@@ -35,7 +38,8 @@ router.post('/contact', (req, res, next) => {
 // api/contact
 router.put('/contact/:id', async (req, res, next) => {
   try {
-    const doc = await Contact.findOneAndUpdate({ _id: req.params.id }, {
+    // mongoose.Types.ObjectId();
+    const doc = await Contact.findOneAndUpdate({ _id: mongoose.Types.ObjectId(req.params.id) }, {
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       phone: req.body.phone,

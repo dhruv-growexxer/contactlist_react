@@ -45,23 +45,27 @@ body {
   }
 }
 
+.container {
+  display: flex;
+  width: 50%;
+  margin: 20px auto;
+}
+
 .margin-medium {
   margin: auto 10px;
 }
 
 .align-items {
-  display: flex;
-  justify-content: center;
   align-self: center;
   width: 100%;
 }
 
 label {
   font-size: 18px;
-  margin: auto 15px;
 }
 
 h1 {
+  font-family: "Anek Odia", sans-serif;
   font-size: 40px;
   font-weight: bold;
 }

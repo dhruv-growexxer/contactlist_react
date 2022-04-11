@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button, Input, message } from "antd";
 
 const AddList = () => {
+  //useeffect here.
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState(0);
