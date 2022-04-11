@@ -1,14 +1,13 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Modal, Button, Popconfirm, message, Input } from "antd";
+import React, { useState } from "react";
+import { Modal, Button, Popconfirm, message, Input, Form } from "antd";
 
-const Contact = ({contact}) => {
+const Contact = ({ contact }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newFirstName, setNewFirstName] = useState("");
   const [newLastName, setNewLastName] = useState("");
   const [newPhone, setNewPhone] = useState(0);
 
-  
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -45,72 +44,67 @@ const Contact = ({contact}) => {
     await axios.delete(`http://localhost:5000/api/contact/${id}`);
     message.success("Contact Deleted, Refresh the page");
   };
-  return <><div className="container">
-            <label >
-              First name: {contact.first_name}
-            </label>
-            <label >Last name: {contact.last_name}</label>
-            <label>Phone: {contact.phone}</label> <br />
-            <div className="align-items">
-              {/* <Input
-                style={{ width: 200, marginRight: 10, marginLeft: 10, marginTop: 10  }}
+  return (
+    <>
+      <div className="container">
+        <label>First name: {contact.first_name}</label>
+        <label>Last name: {contact.last_name}</label>
+        <label>Phone: {contact.phone}</label> <br />
+        <div className="align-items">
+          <Button type="primary" onClick={showModal}>
+            Update
+          </Button>
+          <Modal
+            title="Basic Modal"
+            visible={isModalVisible}
+            onOk={() =>
+              handleOk(
+                contact._id,
+                contact.first_name,
+                contact.last_name,
+                contact.phone
+              )
+            }
+            onCancel={handleCancel}
+          >
+            <Form>
+              <Input
+                value={newFirstName}
                 type="text"
                 name="new_first_name"
-                placeholder={contact.first_name}
+                placeholder="Edit first name"
                 onChange={(e) => setNewFirstName(e.target.value)}
               />
               <Input
-                style={{ width: 200, marginRight: 10, marginLeft: 10, marginTop: 10 }}
                 type="text"
                 name="new_last_name"
-                placeholder={contact.last_name}
+                placeholder="Edit last name"
                 onChange={(e) => setNewLastName(e.target.value)}
               />
               <Input
-                style={{ width: 200, marginRight: 10, marginLeft: 10, marginTop: 10  }}
                 type="number"
                 name="new_phone"
-                placeholder={contact.phone}
-                onChange={(e) => setNewPhone(e.target.value)} 
-              />*/}
-              {/* <Button
-                className="margin-medium"
-                type="primary"
-                ghost
-                onClick={() =>
-                  handleOk(
-                    contact._id,
-                    contact.first_name,
-                    contact.last_name,
-                    contact.phone
-                  )
-                }
-              >
-                Update
-              </Button> */}
-              <Button type="primary" onClick={showModal} >
-                Update
-              </Button>
-              <Modal title="Basic Modal" visible={isModalVisible} onOk={() => handleOk(contact._id, contact.first_name, contact.last_name, contact.phone)} onCancel={handleCancel}>
-                <Input type="text" name="new_first_name" placeholder='Edit first name' onChange={(e) => setNewFirstName(e.target.value)} />
-                <Input type="text" name="new_last_name" placeholder='Edit last name' onChange={(e) => setNewLastName(e.target.value)} />
-                <Input type="number" name="new_phone" placeholder='Edit phone number' onChange={(e) => setNewPhone(e.target.value)} />
+                placeholder="Edit phone number"
+                onChange={(e) => setNewPhone(e.target.value)}
+              />
+            </Form>
+          </Modal>
+          {/* <Button type="primary" danger ghost onClick={() => deleteContact(contact._id)}>Delete</Button> */}
 
-              </Modal>
-              {/* <Button type="primary" danger ghost onClick={() => deleteContact(contact._id)}>Delete</Button> */}
-
-              <Popconfirm
-                title="Are you sure delete this task?"
-                okText="Yes"
-                cancelText="No"
-                onConfirm={() => deleteContact(contact._id)}
-              >
-                <Button className="margin-medium" type="primary" danger ghost>
-                  Delete
-                </Button>
-              </Popconfirm>
-            </div>
-          </div></>;
+          <Popconfirm
+            title="Are you sure delete this task?"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => deleteContact(contact._id)}
+          >
+            <Button className="margin-medium" type="primary" danger ghost>
+              Delete
+            </Button>
+          </Popconfirm>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Contact;
