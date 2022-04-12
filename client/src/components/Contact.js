@@ -1,8 +1,127 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Popconfirm, message, Input, Form } from "antd";
+import { Button, Modal, Form, Input, message, Popconfirm } from "antd";
 
-const Contact = ({ contact, handleDelete }) => {
+const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
+  const [form] = Form.useForm();
+  return (
+    <Modal
+      visible={visible}
+      title="Create a new collection"
+      okText="Create"
+      cancelText="Cancel"
+      onCancel={onCancel}
+      onOk={() => {
+        form
+          .validateFields()
+          .then((values) => {
+            form.resetFields();
+            onCreate(values);
+          })
+          .catch((info) => {
+            console.log("Validate Failed:", info);
+          });
+      }}
+    >
+      <Form
+        form={form}
+        layout="vertical"
+        name="form_in_modal"
+        initialValues={{
+          modifier: "public",
+        }}
+      >
+        <Form.Item
+          name="first_name"
+          label="First name"
+          rules={[
+            {
+              required: true,
+              message: "Please input the first name!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="last_name"
+          label="Last name"
+          rules={[
+            {
+              required: true,
+              message: "Please input the last name!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="phone"
+          label="Phone number"
+          rules={[
+            {
+              required: true,
+              message: "Please input the Phone number!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+      </Form>
+    </Modal>
+  );
+};
+
+const CollectionsPage = ({ contact, getList }) => {
+  const [visible, setVisible] = useState(false);
+
+  const onCreate = async (values) => {
+    console.log("Received values of form: ", values);
+    console.log(
+      "from collectionsPage",
+      contact._id,
+      contact.first_name,
+      contact.last_name,
+      contact.phone
+    );
+    const res = await axios.put(
+      `http://localhost:5000/api/contact/${contact._id}`,
+      {
+        _id: contact._id,
+        first_name:
+          contact.first_name === "" ? contact.first_name : values.first_name,
+        last_name:
+          contact.last_name === "" ? contact.last_name : values.last_name,
+        phone: contact.phone === 0 ? contact.phone : values.phone,
+      }
+    );
+    message.success("Contact Updated, Refresh the page");
+    setVisible(false);
+    getList();
+  };
+
+  return (
+    <div>
+      <Button
+        type="primary"
+        onClick={() => {
+          setVisible(true);
+        }}
+      >
+        Update
+      </Button>
+      <CollectionCreateForm
+        visible={visible}
+        onCreate={onCreate}
+        onCancel={() => {
+          setVisible(false);
+        }}
+      />
+    </div>
+  );
+};
+
+const Contact = ({ contact, handleDelete, getList }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newFirstName, setNewFirstName] = useState("");
   const [newLastName, setNewLastName] = useState("");
@@ -48,7 +167,8 @@ const Contact = ({ contact, handleDelete }) => {
         <label>Last name: {contact.last_name}</label>
         <label>Phone: {contact.phone}</label> <br />
         <div className="align-items">
-          <Button type="primary" onClick={showModal}>
+          <CollectionsPage contact={contact} getList={getList} />
+          {/* <Button type="primary" onClick={showModal}>
             Update
           </Button>
           <Modal
@@ -85,7 +205,7 @@ const Contact = ({ contact, handleDelete }) => {
                 onChange={(e) => setNewPhone(e.target.value)}
               />
             </Form>
-          </Modal>
+          </Modal> */}
           {/* <Button type="primary" danger ghost onClick={() => deleteContact(contact._id)}>Delete</Button> */}
 
           <Popconfirm

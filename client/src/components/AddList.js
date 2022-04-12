@@ -1,14 +1,27 @@
 import React, { useState } from "react";
-import { Button, Input } from "antd";
+import { Button, Input, message } from "antd";
+import axios from "axios";
 
-const AddList = ({ handleAdd }) => {
+const AddList = ({ getList }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState(0);
 
-  const handleSaveClick = () => {
+  const handleSaveClick = async () => {
     if (firstName !== "" && lastName !== "" && phone !== 0) {
-      handleAdd(firstName, lastName, phone);
+      try {
+        const postList = await axios.post("http://localhost:5000/api/contact", {
+          first_name: firstName,
+          last_name: lastName,
+          phone,
+        });
+
+        message.success("Contact added");
+      } catch (error) {
+        console.log("error ", error);
+      }
+      // handleAdd(firstName, lastName, phone);
+      getList();
     }
   };
 

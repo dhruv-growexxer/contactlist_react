@@ -29,29 +29,6 @@ function App() {
     }
   };
 
-  const addToList = async (firstName, lastName, phone) => {
-    try {
-      const postList = await axios.post("http://localhost:5000/api/contact", {
-        first_name: firstName,
-        last_name: lastName,
-        phone,
-      });
-
-      const tempObj = {
-        first_name: firstName,
-        last_name: lastName,
-        phone,
-      };
-
-      const tempContactList = [...contactList, tempObj];
-      setContactList(tempContactList);
-      console.log(contactList, "contactList from addToList");
-      message.success("Contact added");
-    } catch (error) {
-      console.log("error ", error);
-    }
-  };
-
   const updateContact = async (id, fname, lname, pno) => {
     console.log("Update Contact called......");
     console.log(id, fname, lname, pno);
@@ -105,12 +82,13 @@ function App() {
   return (
     <div className="App">
       <Headers />
-      <AddList handleAdd={addToList} />
+      <AddList getList={getList} />
       <GetList
         contactList={contactList}
         onChange={getList}
         handleDelete={deleteContact}
         handleUpdate={updateContact}
+        getList={getList}
       />
     </div>
   );
