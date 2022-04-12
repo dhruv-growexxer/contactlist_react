@@ -1,8 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Popconfirm, message, Input, Form } from "antd";
 
-const Contact = ({ contact }) => {
+const Contact = ({ contact, handleDelete }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newFirstName, setNewFirstName] = useState("");
   const [newLastName, setNewLastName] = useState("");
@@ -19,6 +19,7 @@ const Contact = ({ contact }) => {
     // }
     // '' -> prevValue ie fname
     // not'' -> newValue ie newFirstName
+
     axios
       .put(`http://localhost:5000/api/contact/${id}`, {
         id: id,
@@ -40,13 +41,9 @@ const Contact = ({ contact }) => {
     setIsModalVisible(false);
   };
 
-  const deleteContact = async (id) => {
-    await axios.delete(`http://localhost:5000/api/contact/${id}`);
-    message.success("Contact Deleted, Refresh the page");
-  };
   return (
     <>
-      <div className="container">
+      <div>
         <label>First name: {contact.first_name}</label>
         <label>Last name: {contact.last_name}</label>
         <label>Phone: {contact.phone}</label> <br />
@@ -95,7 +92,7 @@ const Contact = ({ contact }) => {
             title="Are you sure delete this task?"
             okText="Yes"
             cancelText="No"
-            onConfirm={() => deleteContact(contact._id)}
+            onConfirm={() => handleDelete(contact._id)}
           >
             <Button className="margin-medium" type="primary" danger ghost>
               Delete
