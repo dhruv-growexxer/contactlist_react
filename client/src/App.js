@@ -8,6 +8,9 @@ import { message } from "antd";
 
 function App() {
   const [contactList, setContactList] = useState([]);
+  const [newFirstName, setNewFirstName] = useState("");
+  const [newLastName, setNewLastName] = useState("");
+  const [newPhone, setNewPhone] = useState(0);
   useEffect(() => {
     getList();
   }, []);
@@ -49,15 +52,41 @@ function App() {
     }
   };
 
-  // const updateContact = async (id, fname, lname, pno) => {
-  //   console.log(id, fname, lname, pno);
-  //   const res = await axios.put(`http://localhost:5000/api/contact/${id}`, {
-  //     id: id,
-  //     first_name: newFirstName === "" ? fname : newFirstName,
-  //     last_name: newLastName === "" ? lname : newLastName,
-  //     phone: newPhone === 0 ? pno : newPhone,
-  //   });
-  // };
+  const updateContact = async (id, fname, lname, pno) => {
+    console.log("Update Contact called......");
+    console.log(id, fname, lname, pno);
+
+    contactList.map((contact, index) => {
+      // if (contact._id === id) {
+      //   console.log(
+      //     contactList.first_name,
+      //     contactList.last_name,
+      //     contactList.phone
+      //   );
+      // }
+      if (contact._id === id) {
+        const newTempContact = {
+          _id: id,
+          first_name: fname === "" ? newFirstName : fname,
+          last_name: lname === "" ? newLastName : lname,
+          phone: pno === 0 ? newPhone : pno,
+        };
+        console.log(contact, "Contact from updateContact");
+        setNewFirstName(contact.first_name);
+        setNewLastName(contact.last_name);
+        setNewPhone(contact.phone);
+        console.log(newTempContact);
+      }
+    });
+    const res = await axios.put(`http://localhost:5000/api/contact/${id}`, {
+      _id: id,
+      first_name: fname === "" ? newFirstName : fname,
+      last_name: lname === "" ? newLastName : lname,
+      phone: pno === 0 ? newPhone : pno,
+    });
+
+    console.log("res from updateContact", res);
+  };
 
   const deleteContact = async (id) => {
     const res = await axios.delete(`http://localhost:5000/api/contact/${id}`);
@@ -81,7 +110,7 @@ function App() {
         contactList={contactList}
         onChange={getList}
         handleDelete={deleteContact}
-        // handleUpdate={updateContact}
+        handleUpdate={updateContact}
       />
     </div>
   );
