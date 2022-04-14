@@ -1,78 +1,7 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
-import { Button, Modal, Form, Input, message } from "antd";
-
-const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
-  const [form] = Form.useForm();
-
-  return (
-    <Modal
-      //   destroyOnClose={true}
-      visible={visible}
-      title="Enter updates"
-      okText="Create"
-      cancelText="Cancel"
-      onCancel={onCancel}
-      onOk={() => {
-        form
-          .validateFields()
-          .then((values) => {
-            form.resetFields();
-            onCreate(values);
-          })
-          .catch((info) => {
-            console.log("Validate Failed:", info);
-          });
-      }}
-    >
-      <Form
-        form={form}
-        name="form_in_modal"
-        initialValues={{
-          modifier: "public",
-        }}
-      >
-        <Form.Item
-          name="first_name"
-          label="First name"
-          rules={[
-            {
-              required: true,
-              message: "Please input the first name!",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="last_name"
-          label="Last name"
-          rules={[
-            {
-              required: true,
-              message: "Please input the last name!",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="phone"
-          label="Phone number"
-          rules={[
-            {
-              required: true,
-              message: "Please input the Phone number!",
-              pattern: new RegExp(/^[0-9]+$/),
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-      </Form>
-    </Modal>
-  );
-};
+import React, { useState } from "react";
+import { Button, message } from "antd";
+import { MyForm } from "./MyForm";
 
 export const MyModal = ({ contact, getList }) => {
   const [visible, setVisible] = useState(false);
@@ -99,10 +28,11 @@ export const MyModal = ({ contact, getList }) => {
           phone: contact.phone === 0 ? contact.phone : values.phone,
         }
       );
-      message.success("Contact Updated, Refresh the page");
+      message.success("Contact Updated");
       setVisible(false);
       getList();
     } catch (error) {
+      message.error("Error while updating contact");
       console.log(error);
     }
     getList();
@@ -118,7 +48,8 @@ export const MyModal = ({ contact, getList }) => {
       >
         Update
       </Button>
-      <CollectionCreateForm
+      <MyForm
+        contact={contact}
         visible={visible}
         onCreate={onCreate}
         onCancel={() => {

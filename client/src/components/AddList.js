@@ -1,23 +1,21 @@
-import React, { useState } from "react";
-import { Button, Input, message } from "antd";
+import React from "react";
+import { Button, Form, Input, message } from "antd";
 import axios from "axios";
 
 const AddList = ({ getList }) => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState(0);
-
-  const handleSaveClick = async () => {
-    if (firstName !== "" && lastName !== "" && phone !== 0) {
+  const onFinish = async (values) => {
+    const { first_name, last_name, phone } = values;
+    if (first_name !== "" && last_name !== "" && phone !== 0) {
       try {
         const postList = await axios.post("http://localhost:5000/api/contact", {
-          first_name: firstName,
-          last_name: lastName,
+          first_name: first_name,
+          last_name: last_name,
           phone,
         });
 
         message.success("Contact added");
       } catch (error) {
+        message.error("Error while adding contact");
         console.log("error ", error);
       }
       // handleAdd(firstName, lastName, phone);
@@ -25,42 +23,75 @@ const AddList = ({ getList }) => {
     }
   };
 
+  const onFinishFailed = (errorInfo) => {
+    message.error("Error while adding contact");
+    console.log(errorInfo);
+  };
   return (
-    <div className="add-list">
-      <label htmlFor="first_name">Enter first name: </label>
-      <Input
-        style={{ width: 200, marginRight: 10 }}
-        type="text"
+    <Form
+      layout="horizontal"
+      name="addlist"
+      labelCol={{
+        span: 8,
+      }}
+      wrapperCol={{
+        span: 8,
+      }}
+      initialValues={{
+        remember: true,
+      }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+      autoComplete="off"
+    >
+      <Form.Item
+        label="First name"
         name="first_name"
-        id=""
-        onChange={(e) => setFirstName(e.target.value)}
-      />
-      <label htmlFor="last_name">Enter last name: </label>
-      <Input
-        style={{ width: 200, marginRight: 10 }}
-        type="text"
-        name="last_name"
-        id=""
-        onChange={(e) => setLastName(e.target.value)}
-      />
-      <label htmlFor="phone">Enter phone number: </label>
-      <Input
-        style={{ width: 200, marginRight: 2, marginLeft: 2 }}
-        type="number"
-        name="phone"
-        id=""
-        onChange={(e) => setPhone(e.target.value)}
-      />
-      <Button
-        className="margin-medium"
-        type="primary"
-        onClick={handleSaveClick}
+        rules={[
+          {
+            required: true,
+            message: "Please input your first name!",
+          },
+        ]}
       >
-        Add user
-      </Button>{" "}
-      <br />
-      <br />
-    </div>
+        <Input />
+      </Form.Item>
+      <Form.Item
+        label="Last name"
+        name="last_name"
+        rules={[
+          {
+            required: true,
+            message: "Please input your last name!",
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        name="phone"
+        label="Phone number"
+        rules={[
+          {
+            required: true,
+            message: "Please input the Phone number!",
+            pattern: new RegExp(/^[0-9]+$/),
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        wrapperCol={{
+          offset: 8,
+          span: 8,
+        }}
+      >
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 

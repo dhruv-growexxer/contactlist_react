@@ -74,3 +74,27 @@ h1 {
 .add-list {
   margin: 15px auto;
 }
+
+/* table */
+.table-container {
+  display: flex;
+  justify-content: center;
+}
+.ant-table {
+  font-size: 18px;
+}
+
+/* row data */
+.ant-table-tbody > tr > td {
+  height: 8px;
+  padding: 6px;
+}
+
+.highlight-bottom-border > td {
+  border-bottom: solid 1px black !important;
+}
+
+.highlight-top-border > td {
+  border-top: solid 2px black !important;
+  border-bottom: solid 2px #6d9eff !important;
+}
