@@ -4,10 +4,12 @@ import { Button, Modal, Form, Input, message } from "antd";
 
 const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm();
+
   return (
     <Modal
+      //   destroyOnClose={true}
       visible={visible}
-      title="Create a new collection"
+      title="Enter updates"
       okText="Create"
       cancelText="Cancel"
       onCancel={onCancel}
@@ -61,6 +63,7 @@ const CollectionCreateForm = ({ visible, onCreate, onCancel }) => {
             {
               required: true,
               message: "Please input the Phone number!",
+              pattern: new RegExp(/^[0-9]+$/),
             },
           ]}
         >
@@ -106,7 +109,7 @@ export const MyModal = ({ contact, getList }) => {
   };
 
   return (
-    <div>
+    <div style={{ display: "inline-block" }}>
       <Button
         type="primary"
         onClick={() => {
